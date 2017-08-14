@@ -27,11 +27,11 @@ export default {
   data () {
     return {
       todos: [
-             {'id': 1, 'text': 'Make this Vue app', complete: false, editing: false},
-             {'id': 2, 'text': 'Use Vue Cli', complete: false, editing: false}
+             {'id': 0, 'text': 'Make this Vue app', complete: false, editing: false},
+             {'id': 1, 'text': 'Use Vue Cli', complete: false, editing: false}
       ],
       newText: '',
-      nextId: 5
+      count: 2
     }
   },
   methods: {
@@ -51,7 +51,8 @@ export default {
       this.todos = this.todos.filter((todo) => todo.id !== id)
     },
     addTodo () {
-      this.todos.push({'id': this.todos.length + 1, 'text': '', complete: false, editing: true})
+      let nextId = this.count++
+      this.todos.push({'id': nextId, 'text': '', complete: false, editing: true})
     }
   }
 }
