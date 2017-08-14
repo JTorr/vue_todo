@@ -5,7 +5,7 @@
       <i v-if="todo.complete" class="el-icon-circle-check"></i>
       <span v-if="!todo.editing">{{todo.text}}</span>
     </p>
-    <input v-on:keyup.enter="saveTodo(todo.id) "v-if="todo.editing" v-model="todo.text"></input>
+    <input v-on:keyup.enter="saveTodo(todo.id) "v-if="todo.editing" v-model="todo.text" class="todoInput"></input>
     <el-row>
       <el-button-group>
         <el-button type="success" icon="circle-check" size="mini" @click="completeTodo(todo.id)"></el-button>
@@ -13,6 +13,10 @@
         <el-button type="danger" icon="delete" size="mini" @click="removeTodo(todo.id)"></el-button>
       </el-button-group>
     </el-row>
+    </div>
+
+    <div class="addTodo">
+      <el-button icon="plus" type="success" size="large" @click="addTodo"></el-button>
     </div>
   </div>
 </template>
@@ -23,9 +27,11 @@ export default {
   data () {
     return {
       todos: [
-             {'id': 1, 'text': 'Make this Vue app', 'complete': false, editing: false},
-             {'id': 2, 'text': 'Use Vue Cli', 'complete': false, editing: false}
-      ]
+             {'id': 1, 'text': 'Make this Vue app', complete: false, editing: false},
+             {'id': 2, 'text': 'Use Vue Cli', complete: false, editing: false}
+      ],
+      newText: '',
+      nextId: 5
     }
   },
   methods: {
@@ -43,6 +49,9 @@ export default {
     },
     removeTodo (id) {
       this.todos = this.todos.filter((todo) => todo.id !== id)
+    },
+    addTodo () {
+      this.todos.push({'id': this.todos.length + 1, 'text': '', complete: false, editing: true})
     }
   }
 }
@@ -72,5 +81,15 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.todoInput {
+  height: 500px;
+  margin: -10px 5px 10px 5px;
+}
+
+.addTodo {
+  margin-top: 40px;
+  margin-left: 30px;
 }
 </style>
