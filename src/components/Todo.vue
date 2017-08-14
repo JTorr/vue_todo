@@ -1,12 +1,15 @@
 <template>
   <div class="todoList">
   <div class="sticky" v-for="todo in todos">
-    <span class="todoText">{{todo.text}}</span>
-    <i v-if="todo.complete" class="el-icon-check"></i>
+    <p class="todoText">
+      <i v-if="todo.complete" class="el-icon-circle-check"></i>
+      <span v-if="!todo.editing">{{todo.text}}</span>
+    </p>
+    <input v-on:keyup.enter="saveTodo(todo.id) "v-if="todo.editing" v-model="todo.text"></input>
     <el-row>
       <el-button-group>
         <el-button type="success" icon="circle-check" size="mini" @click="completeTodo(todo.id)"></el-button>
-        <el-button type="info" icon="edit" size="mini"></el-button>
+        <el-button type="info" icon="edit" size="mini" @click="editTodo(todo.id)"></el-button>
         <el-button type="danger" icon="delete" size="mini" @click="removeTodo(todo.id)"></el-button>
       </el-button-group>
     </el-row>
@@ -20,8 +23,8 @@ export default {
   data () {
     return {
       todos: [
-             {'id': 1, 'text': 'Make this Vue app', 'complete': false},
-             {'id': 2, 'text': 'Use Vue Cli', 'complete': false}
+             {'id': 1, 'text': 'Make this Vue app', 'complete': false, editing: false},
+             {'id': 2, 'text': 'Use Vue Cli', 'complete': false, editing: false}
       ]
     }
   },
@@ -30,9 +33,13 @@ export default {
       let myTodo = this.todos.find((todo) => todo.id === id)
       myTodo.complete = true
     },
-    editTodo (id, newText) {
+    editTodo (id) {
       let myTodo = this.todos.find((todo) => todo.id === id)
-      myTodo.text = newText
+      myTodo.editing = true
+    },
+    saveTodo (id) {
+      let myTodo = this.todos.find((todo) => todo.id === id)
+      myTodo.editing = false
     },
     removeTodo (id) {
       this.todos = this.todos.filter((todo) => todo.id !== id)
